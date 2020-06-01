@@ -139,29 +139,79 @@ console.log(singlyLinkedList)
 
 //class example using head and tail
 class SinglyLinkedList {
-    constructor(){
+    constructor() {
         this.head = null;
         this.tail = null;
         this.length = 0;
     }
-    add(data){
-        let newNode = new Node(data)
-        if(!this.head){
-            this.head = newNode
-            this.tail = this.head
-        } else {
-            this.tail.next = newNode
-            this.tail = newNode
+    add(data) {
+        let newNode = new Node(data)        //create newNode obj using Node template and 'data' parameter as data
+        if (!this.head) {                   //if head has no value
+            this.head = newNode                 //set head as newNode obj
+            this.tail = this.head               //set tail as newNode obj
+        } else {                            //else
+            this.tail.next = newNode            //set next property of tail as newNode
+            this.tail = newNode                 //set tail is newNode
         }
-        this.length++
-        return this
+        this.length++                       //add 1 to length property
+        return this                         //return edited list
+    }
+    removeTail() {
+        if (!this.head) return undefined;    //if head is empty, return undefined
+        let current = this.head;                //clone linked list to 'current' var
+        let newTail = current;                  //set newTail as 'current' node
+        //find second to last node in list
+        while (current.next) {                //while current node's next property has a value, else dont run
+            newTail = current;                  //set newTail as current list
+            current = current.next;             //set current list as nested next node
+        }
+        this.tail = newTail                 //set list tail as newTail var
+        this.tail.next = null;              //set next property of tail as null
+        this.length--                       //subtract 1 from length prop
+        if (this.length === 0) {              //if lenght is 0
+            this.head = null                    //set head as null
+            this.tail = null                    //set tail as null
+        }
+        return current                      //return editied list
+    }
+    index(index) {
+        if (index < 0 || index >= this.length) return null; //if index parameter is less than 0 or equal or greater than list length
+                                                            //return null
+        let counter = 0;                    //set counter var
+        let current = this.head;            //clone linked list to 'current' var
+        while (counter != index) {          //while counter is not equal to index parameter
+            current = current.next              //set current list as nested next node
+            counter++                           //add 1 to counter
+        }
+        return current                      //return current var
+    }
+    edit(index,data){
+        let editNode = this.index(index)      //set editNode var as desired index using index() func
+        if(editNode){                       //if editNode has value
+            editNode.data = data                //set editNodes data property as input data param
+            return true                         //return true
+        }
+        return false                        //else return false
     }
 }
 
 singlyLinkedList = new SinglyLinkedList()
 console.log(singlyLinkedList)
 
+//adding nodes
 singlyLinkedList.add("Node 1")
 singlyLinkedList.add("Node 2")
 singlyLinkedList.add("Node 3")
 console.log(singlyLinkedList)
+
+//viewing node at index
+console.log(singlyLinkedList.index(1))
+
+//editing node at index
+singlyLinkedList.edit(1,"Edited node 2")
+console.log(singlyLinkedList.index(1))
+
+//removing end node
+singlyLinkedList.removeTail()
+console.log(singlyLinkedList)
+
